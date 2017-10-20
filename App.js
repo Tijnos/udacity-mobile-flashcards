@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
-import { createStore } from 'redux'
+import { createStore, compose, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
 import { Constants, Pl } from 'expo'
@@ -8,6 +8,8 @@ import {TabNavigator} from 'react-navigation';
 import DeckList from './components/DeckList';
 import {white, orange} from "./utils/colors";
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import {createLogger} from 'redux-logger';
+import thunk from 'redux-thunk';
 
 const Tabs = new TabNavigator({
     DeckList: {
@@ -35,8 +37,17 @@ const Tabs = new TabNavigator({
 
 export default class App extends React.Component {
   render() {
+      const logger = createLogger({});
+      const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+      const store = createStore(reducer,
+          composeEnhancers(
+                applyMiddleware(thunk, logger)
+          )
+      );
+
     return (
-        <Provider store={createStore(reducer)}>
+        <Provider store={store}>
             <View style={{flex:1}}>
                 <View style={{ backgroundColor: orange, height: Constants.statusBarHeight }}>
                     <StatusBar translucent backgroundColor={orange} barStyle="light-content" />
