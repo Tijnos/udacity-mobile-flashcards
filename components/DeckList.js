@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {Text, View, FlatList} from 'react-native';
+import {Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {getDecks} from "../actions/index";
+import PrimaryButton from './styled/PrimaryButton';
+import DeckView from "./styled/DeckView";
 
 class DeckList extends Component {
     componentDidMount() {
@@ -10,26 +12,62 @@ class DeckList extends Component {
         getDecks();
     }
 
-    renderItem(item) {
+    renderItem = (item) => {
         const deck = item.item;
 
         return (
-            <View key={deck.title}>
-                <Text>{deck.title}</Text>
-                <Text>{deck.questions.length} {deck.questions.length === 1 ? 'card' : 'cards'}</Text>
-            </View>
+            <TouchableOpacity onPress={() => this.toDeck(deck)}>
+                <DeckView title={deck.title} questionCount={deck.questions.length}/>
+            </TouchableOpacity>
         );
-    }
+    };
+
+    toDeck = (deck) => {
+        this.props.navigation.navigate(
+          'Deck',
+          { title: deck.title }
+        );
+    };
+
+    toCreateDeck = () => {
+        this.props.navigation.navigate(
+          'CreateDeck',
+        );
+    };
 
     render() {
         const {decks} = this.props;
+        const listData = Object.keys(decks).map((key) => {
+             return {
+                 ...decks[key],
+                 key
+             }
+        }).sort((a, b) => {
+            let aTitle = a.title.toUpperCase(),
+                bTitle = b.title.toUpperCase();
+
+            if (aTitle < bTitle) {
+                return -1
+            }
+
+            if (aTitle > bTitle) {
+                return 1
+            }
+
+            return 0;
+
+        });
 
         return (
-            <View style={{flex:1, justifyContent: 'center', alignContent: 'center'}}>
-                <FlatList
-                    renderItem={this.renderItem}
-                    data={Object.keys(decks).map((key) => decks[key])}
-                />
+            <View style={{flex:1, justifyContent: 'center', alignContent: 'center',
+                marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20}}>
+                <PrimaryButton title="Create new deck" onPress={this.toCreateDeck}/>
+                {decks && (
+                    <FlatList
+                        renderItem={this.renderItem}
+                        data={listData}
+                    />
+                )}
             </View>
         );
     }
@@ -46,6 +84,7 @@ function mapDispatchToProps(dispatch) {
         getDecks: () => dispatch(getDecks())
     }
 }
+
 
 export default connect(
     mapStateToProps,
