@@ -39,10 +39,6 @@ class DeckList extends Component {
     render() {
         const {decks} = this.props;
 
-        if (Object.keys(decks).length === 0) {
-            saveDefaultDecks().then(() => getDecks());
-        }
-
         const listData = Object.keys(decks).map((key) => {
              return {
                  ...decks[key],
@@ -80,6 +76,11 @@ class DeckList extends Component {
 }
 
 function mapStateToProps(decks) {
+
+    if (decks === null) {
+        saveDefaultDecks().then(() => getDecks());
+    }
+
     return {
         decks: decks ? decks : {}
     };
