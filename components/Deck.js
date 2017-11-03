@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import PrimaryButton from "./styled/PrimaryButton";
 import DeckView from "./styled/DeckView";
 import SecondaryButton from "./styled/SecondaryButton";
+import styled from 'styled-components/native';
 
 
 class Deck extends Component {
@@ -42,7 +43,7 @@ class Deck extends Component {
         const {deck} = this.props;
 
         return (
-            <View style={{marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20}}>
+            <Container>
                 {deck && (
                     <View>
                         <DeckView title={deck.title} questionCount={deck.questions.length}/>
@@ -56,10 +57,14 @@ class Deck extends Component {
                         <Text>No deck found</Text>
                     </View>
                 )}
-            </View>
+            </Container>
         );
     }
 }
+
+const Container = styled.View`
+    margin: 10px 20px;
+`;
 
 function mapStateToProps(decks, {navigation}) {
     const { title } = navigation.state.params;

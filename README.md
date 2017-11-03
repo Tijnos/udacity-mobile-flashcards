@@ -28,3 +28,9 @@ Follow the instructions in the terminal to get the app up and running!
 ### Tested on the following devices/simulator
 * iPhone X iOS 11.0 simulator
 * Samsung Galaxy S8 Android 7.0 device
+
+## Usefull links
+Expo documentation: https://docs.expo.io/versions/latest/index.html
+
+## License
+MIT

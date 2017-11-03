@@ -2,7 +2,8 @@ import {
     SET_DECKS,
     ADD_DECK,
     ADD_CARD
-} from "../actions/index";
+} from "../actions/types";
+
 
 function decks(state = {}, action) {
     switch(action.type) {

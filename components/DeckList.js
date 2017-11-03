@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {getDecks} from "../actions/index";
 import PrimaryButton from './styled/PrimaryButton';
 import DeckView from "./styled/DeckView";
+import {saveDefaultDecks} from "../utils/api";
 
 class DeckList extends Component {
     componentDidMount() {
@@ -37,6 +38,11 @@ class DeckList extends Component {
 
     render() {
         const {decks} = this.props;
+
+        if (Object.keys(decks).length === 0) {
+            saveDefaultDecks().then(() => getDecks());
+        }
+
         const listData = Object.keys(decks).map((key) => {
              return {
                  ...decks[key],
@@ -75,18 +81,12 @@ class DeckList extends Component {
 
 function mapStateToProps(decks) {
     return {
-        decks
+        decks: decks ? decks : {}
     };
-}
-
-function mapDispatchToProps(dispatch) {
-    return  {
-        getDecks: () => dispatch(getDecks())
-    }
 }
 
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    {getDecks}
 )(DeckList);

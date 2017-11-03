@@ -87,18 +87,13 @@ class CreateDeck extends Component {
 }
 
 function mapStateToProps(decks) {
-    return {
-        decks
-    };
-}
 
-function mapDispatchToProps(dispatch) {
-    return  {
-        addDeck: (title) => dispatch(addDeck(title))
-    }
+    return {
+        decks: decks ? decks : {}
+    };
 }
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    {addDeck}
 )(CreateDeck);

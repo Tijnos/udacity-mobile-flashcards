@@ -1,11 +1,9 @@
 import * as Api from "../utils/api";
 
-export const SET_DECKS = 'SET_DECKS';
-export const ADD_DECK = 'ADD_DECK';
-export const ADD_CARD = 'ADD_CARD';
+import {ADD_DECK, SET_DECKS, ADD_CARD} from "./types";
 
 export const getDecks = () => dispatch => {
-    Api.getDecks().then((decks) => dispatch(setDecks(decks)))
+    return Api.getDecks().then((decks) => dispatch(setDecks(decks)))
 };
 
 export function addDeck(title) {

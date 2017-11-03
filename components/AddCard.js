@@ -61,19 +61,21 @@ class AddCard extends Component {
     validateForm() {
         let valid = true;
 
-        if (this.state.question.value.length === 0) {
-            this.setInputError('question', 'Question is required');
-            valid = false;
-        } else {
-            this.setInputError('question', null);
-        }
+        this.state.question.value.length === 0 ? (
+            this.setInputError('question', 'Question is required'),
+            valid = false
+        ) :
+        (
+            this.setInputError('question', null)
+        );
 
-        if (this.state.answer.value.length === 0) {
-            this.setInputError('answer', 'Answer is required');
-            valid = false;
-        } else {
-            this.setInputError('answer', null);
-        }
+
+        this.state.answer.value.length === 0 ? (
+            this.setInputError('answer', 'Answer is required'),
+            valid = false
+        ) : (
+            this.setInputError('answer', null)
+        );
 
         return valid;
     }
@@ -107,13 +109,7 @@ function mapStateToProps(decks) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return  {
-        addCard: (deckTitle, question, answer) => dispatch(addCard(deckTitle, question, answer))
-    }
-}
-
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    {addCard}
 )(AddCard);
